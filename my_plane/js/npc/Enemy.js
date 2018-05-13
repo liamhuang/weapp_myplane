@@ -13,6 +13,7 @@ let loaded = false;
 let loadImageList  = function(){
   if( true == loaded ){ return };
   loaded = true;
+  debugger;
   for ( let i = 0;i < EXPLO_FRAME_COUNT;i++ ) {
     let img = wx.createImage();
     img.src = EXPLO_IMG_PREFIX + (i + 1) + '.png';
@@ -57,7 +58,7 @@ export default class Enemy extends VisualGameObject
          that.start( x  )
       }
       this.image.src = ENEMY_IMG_SRC;
-
+      loadImageList();
 	  return this;
   }
 	
@@ -102,12 +103,11 @@ export default class Enemy extends VisualGameObject
     let that = this;
     setInterval( function(){
       if( that.explosionNum == EXPLO_FRAME_COUNT ){
-          this.shutdownVisualGameObject( GameGlobal.g_GameObjectManager );
+          that.shutdownVisualGameObject( GameGlobal.g_GameObjectManager );
       }else{
-        that.explosionNum ++;
-        that.image =  explosionList[ that.explosionNum ]
+        that.explosionNum += 1;
+        explosionList[ that.explosionNum ] && ( that.image =  explosionList[ that.explosionNum ]);
       }
-    }, 300 );
-    this.playExplosion();
+    }, 50 );
   }
 }
